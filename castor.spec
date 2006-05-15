@@ -1,12 +1,13 @@
 Summary:	An open source data binding framework for Java
+Summary(pl):	Szkielet wi±zania danych dla Javy
 Name:		castor
 Version:	0.9.6
-Release:	1jpp
+Release:	1.1
 License:	Exolab Software License, BSD-like
 Group:		Development/Languages/Java
-URL:		http://castor.codehaus.org/
 Source0:	http://dist.codehaus.org/castor/0.9.6/%{name}-%{version}-src.tgz
 # Source0-md5:	3ec1b9623f04b86f157738bd3f10a847
+URL:		http://castor.codehaus.org/
 BuildRequires:	adaptx
 BuildRequires:	cglib
 BuildRequires:	jakarta-ant
@@ -39,8 +40,15 @@ basically the shortest path between Java objects, XML documents and
 SQL tables. Castor provides Java to XML binding, Java to SQL
 persistence, and then some more.
 
+%description -l pl
+Castor to maj±cy otwarte ¼ród³a szkielet wi±zania danych dla Javy.
+Jest zasadniczo najkrótsz± ¶cie¿k± miêdzy obiektami Javy, dokumentami
+XML a tabelami SQL. Castor udostêpnia wi±zania Javy do XML-a,
+utrzymywanie Javy do SQL-a i nieco wiêcej.
+
 %package test
 Summary:	Tests for %{name}
+Summary(pl):	Testy dla pakietu %{name}
 Group:		Development/Languages/Java
 Requires:	%{name} = %{version}-%{release}
 Requires:	junit
@@ -48,27 +56,42 @@ Requires:	junit
 %description test
 Tests for %{name}.
 
+%description test -l pl
+Testy dla pakietu %{name}.
+
 %package xml
-Summary:	XML support for %{name}
+Summary:	XML support for Castor
+Summary(pl):	Obs³uga XML-a dla Castora
 Group:		Development/Languages/Java
 Requires:	%{name} = %{version}-%{release}
 
 %description xml
 XML support for Castor.
 
+%description xml -l pl
+Obs³uga XML-a dla Castora.
+
 %package javadoc
 Summary:	Javadoc for %{name}
+Summary(pl):	Dokumentacja javadoc dla pakietu %{name}
 Group:		Documentation
 
 %description javadoc
 Javadoc for %{name}.
 
+%description javadoc -l pl
+Dokumentacja javadoc dla pakietu %{name}.
+
 %package doc
 Summary:	Documentation for %{name}
+Summary(pl):	Dokumentacja dla pakietu %{name}
 Group:		Documentation
 
 %description doc
 Documentation for %{name}.
+
+%description doc -l pl
+Dokumentacja dla pakietu %{name}.
 
 %prep
 %setup -q
@@ -87,18 +110,17 @@ ant -buildfile src/build.xml javadoc
 
 %install
 rm -rf $RPM_BUILD_ROOT
-rm -rf $RPM_BUILD_ROOT
 
 # jar
 install -d $RPM_BUILD_ROOT%{_javadir}
 install dist/%{name}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
 install dist/%{name}-%{version}-xml.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-xml-%{version}.jar
 install dist/CTF-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-tests-%{version}.jar
-pushd $RPM_BUILD_ROOT%{_javadir}
-   for jar in *-%{version}.jar; do
-      ln -sf ${jar} $(echo $jar| sed  -e "s|-%{version}||g")
-   done
-popd
+cd $RPM_BUILD_ROOT%{_javadir}
+for jar in *-%{version}.jar; do
+	ln -sf ${jar} $(echo $jar| sed  -e "s|-%{version}||g")
+done
+cd -
 
 # javadoc
 install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
@@ -120,7 +142,7 @@ ln -s %{name}-%{version} %{_javadocdir}/%{name}
 
 %postun javadoc
 if [ "$1" = "0" ]; then
-    rm -f %{_javadocdir}/%{name}
+	rm -f %{_javadocdir}/%{name}
 fi
 
 %files
