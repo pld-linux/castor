@@ -10,7 +10,7 @@ Source0:	http://dist.codehaus.org/castor/0.9.6/%{name}-%{version}-src.tgz
 URL:		http://castor.codehaus.org/
 BuildRequires:	adaptx
 BuildRequires:	cglib
-BuildRequires:	jakarta-ant
+BuildRequires:	ant
 BuildRequires:	jakarta-oro
 BuildRequires:	jakarta-regexp
 BuildRequires:	jdbc-stdext
