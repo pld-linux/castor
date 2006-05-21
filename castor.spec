@@ -9,17 +9,17 @@ Source0:	http://dist.codehaus.org/castor/0.9.6/%{name}-%{version}-src.tgz
 # Source0-md5:	3ec1b9623f04b86f157738bd3f10a847
 URL:		http://castor.codehaus.org/
 BuildRequires:	adaptx
-BuildRequires:	cglib
 BuildRequires:	ant
+BuildRequires:	cglib
 BuildRequires:	jakarta-oro
 BuildRequires:	jakarta-regexp
 BuildRequires:	jdbc-stdext
 BuildRequires:	jdk
 BuildRequires:	jndi
-#BuildRequires:	jpackage-utils >= 0:1.5.39
 BuildRequires:	jta
 BuildRequires:	junit
 BuildRequires:	ldapsdk
+#BuildRequires:	rpm-javaprov
 BuildRequires:	xerces-j
 Requires:	adaptx
 Requires:	cglib
