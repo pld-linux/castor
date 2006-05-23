@@ -19,7 +19,6 @@ BuildRequires:	jndi
 BuildRequires:	jta
 BuildRequires:	junit
 BuildRequires:	ldapsdk
-#BuildRequires:	rpm-javaprov
 BuildRequires:	xerces-j
 Requires:	adaptx
 Requires:	cglib
