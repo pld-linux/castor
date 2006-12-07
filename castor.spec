@@ -19,6 +19,7 @@ BuildRequires:	jndi
 BuildRequires:	jta
 BuildRequires:	junit
 BuildRequires:	ldapsdk
+BuildRequires:	perl-base
 BuildRequires:	xerces-j
 Requires:	adaptx
 Requires:	cglib
