@@ -1,5 +1,5 @@
 Summary:	An open source data binding framework for Java
-Summary(pl.UTF-8):   Szkielet wiązania danych dla Javy
+Summary(pl.UTF-8):	Szkielet wiązania danych dla Javy
 Name:		castor
 Version:	0.9.6
 Release:	1.1
@@ -48,7 +48,7 @@ utrzymywanie Javy do SQL-a i nieco więcej.
 
 %package test
 Summary:	Tests for %{name}
-Summary(pl.UTF-8):   Testy dla pakietu %{name}
+Summary(pl.UTF-8):	Testy dla pakietu %{name}
 Group:		Development/Languages/Java
 Requires:	%{name} = %{version}-%{release}
 Requires:	junit
@@ -61,7 +61,7 @@ Testy dla pakietu %{name}.
 
 %package xml
 Summary:	XML support for Castor
-Summary(pl.UTF-8):   Obsługa XML-a dla Castora
+Summary(pl.UTF-8):	Obsługa XML-a dla Castora
 Group:		Development/Languages/Java
 Requires:	%{name} = %{version}-%{release}
 
@@ -73,7 +73,7 @@ Obsługa XML-a dla Castora.
 
 %package javadoc
 Summary:	Javadoc for %{name}
-Summary(pl.UTF-8):   Dokumentacja javadoc dla pakietu %{name}
+Summary(pl.UTF-8):	Dokumentacja javadoc dla pakietu %{name}
 Group:		Documentation
 
 %description javadoc
@@ -84,7 +84,7 @@ Dokumentacja javadoc dla pakietu %{name}.
 
 %package doc
 Summary:	Documentation for %{name}
-Summary(pl.UTF-8):   Dokumentacja dla pakietu %{name}
+Summary(pl.UTF-8):	Dokumentacja dla pakietu %{name}
 Group:		Documentation
 
 %description doc
