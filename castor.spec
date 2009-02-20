@@ -1,36 +1,21 @@
+#
+# Conditional build:
+%bcond_without	javadoc		# don't build javadoc
+#
+%include	/usr/lib/rpm/macros.java
 Summary:	An open source data binding framework for Java
 Summary(pl.UTF-8):	Szkielet wiązania danych dla Javy
 Name:		castor
-Version:	0.9.6
-Release:	1.1
+Version:	1.2
+Release:	0.1
 License:	Exolab Software License, BSD-like
 Group:		Development/Languages/Java
-Source0:	http://dist.codehaus.org/castor/0.9.6/%{name}-%{version}-src.tgz
-# Source0-md5:	3ec1b9623f04b86f157738bd3f10a847
+Source0:	castor-1.2.tar.bz2
+# Source0-md5:	3387cdf40b0ab66c1aac1f0fb16ccb5f
 URL:		http://castor.codehaus.org/
-BuildRequires:	adaptx
 BuildRequires:	ant
-BuildRequires:	cglib
-BuildRequires:	jakarta-oro
-BuildRequires:	jakarta-regexp
-BuildRequires:	jdbc-stdext
-BuildRequires:	jdk
-BuildRequires:	jndi
-BuildRequires:	jta
-BuildRequires:	junit
-BuildRequires:	ldapsdk
-BuildRequires:	perl-base
-BuildRequires:	xerces-j
-Requires:	adaptx
-Requires:	cglib
-Requires:	jakarta-regexp
-Requires:	java
-Requires:	jdbc-stdext
-Requires:	jndi
-Requires:	jta
-Requires:	ldapjdk
-Requires:	oro
-Requires:	xerces-j
+BuildRequires:	ant-trax
+BuildRequires:	java-gcj-compat-devel
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -96,76 +81,61 @@ Dokumentacja dla pakietu %{name}.
 
 %prep
 %setup -q
-find . -name "*.jar" -exec rm -f {} \;
-perl -p -i -e 's|org.apache.xerces.utils.regex|org.apache.xerces.impl.xpath.regex|g;' \
-src/main/org/exolab/castor/util/XercesRegExpEvaluator.java
-find . -name "*.java" -exec perl -p -i -e 's|assert\(|assertTrue\(|g;' {} \;
-find . -name "*.java" -exec perl -p -i -e 's|_test.name\(\)|_test.getName\(\)|g;' {} \;
 
 %build
-[ -z "$JAVA_HOME" ] && export JAVA_HOME=%{_jvmdir}/java
-export CLASSPATH=%(build-classpath adaptx cglib jdbc-stdext jndi jta junit ldapjdk oro regexp xerces-j2)
-ant -buildfile src/build.xml jar
-ant -buildfile src/build.xml CTFjar
-ant -buildfile src/build.xml javadoc
+
+export SHELL=/bin/sh
+cd src
+ant -Dbuild.compiler=extJavac jar.all
+ant javadoc
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 # jar
-install -d $RPM_BUILD_ROOT%{_javadir}
-install dist/%{name}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
-install dist/%{name}-%{version}-xml.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-xml-%{version}.jar
-install dist/CTF-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-tests-%{version}.jar
-cd $RPM_BUILD_ROOT%{_javadir}
-for jar in *-%{version}.jar; do
-	ln -sf ${jar} $(echo $jar| sed  -e "s|-%{version}||g")
-done
-cd -
+install -d $RPM_BUILD_ROOT%{_javadir}/castor/lib
+install dist/castor-%{version}-tests.jar            $RPM_BUILD_ROOT%{_javadir}/castor/tests.jar
+install dist/castor-%{version}-jdo.jar              $RPM_BUILD_ROOT%{_javadir}/castor/jdo.jar
+install dist/castor-%{version}-ddlgen.jar           $RPM_BUILD_ROOT%{_javadir}/castor/ddlgen.jar
+install dist/castor-%{version}-xml.jar              $RPM_BUILD_ROOT%{_javadir}/castor/xml.jar
+install dist/castor-%{version}-codegen.jar          $RPM_BUILD_ROOT%{_javadir}/castor/codegen.jar
+install dist/castor-%{version}-examples.jar         $RPM_BUILD_ROOT%{_javadir}/castor/examples.jar
+install dist/castor-%{version}-commons.jar          $RPM_BUILD_ROOT%{_javadir}/castor/commons.jar
+install dist/castor-%{version}-examples-sources.jar $RPM_BUILD_ROOT%{_javadir}/castor/examples-sources.jar
+install dist/castor-%{version}-anttasks.jar         $RPM_BUILD_ROOT%{_javadir}/castor/anttasks.jar
+install dist/castor-%{version}-xml-schema.jar       $RPM_BUILD_ROOT%{_javadir}/castor/xml-schema.jar
+install dist/castor-%{version}.jar                  $RPM_BUILD_ROOT%{_javadir}/castor-%{name}.jar
+
+cp -a lib/*.jar $RPM_BUILD_ROOT%{_javadir}/castor/lib
 
 # javadoc
 install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
-%{__cp} -pr build/doc/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
+cp -a build/doc/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
+ln -s %{srcname}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{srcname} # ghost symlink
 
 # do this last, since it will delete all build directories
 export CLASSPATH=%(build-classpath adaptx)
 ant -buildfile src/build.xml doc
 
-# like magic
-%jpackage_script org.exolab.castor.builder.SourceGenerator %{nil} %{nil} xerces-j2:%{name} %{name}
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post javadoc
-rm -f %{_javadocdir}/%{name}
 ln -s %{name}-%{version} %{_javadocdir}/%{name}
-
-%postun javadoc
-if [ "$1" = "0" ]; then
-	rm -f %{_javadocdir}/%{name}
-fi
 
 %files
 %defattr(644,root,root,755)
 %doc src%{_sysconfdir}/{CHANGELOG,LICENSE,README}
 %attr(755,root,root) %{_bindir}/%{name}
-%{_javadir}/%{name}-%{version}.jar
-%{_javadir}/%{name}.jar
+%{_javadir}/castor
+%{_javadir}/*.jar
 
-%files test
-%defattr(644,root,root,755)
-%{_javadir}/%{name}-tests-%{version}.jar
-%{_javadir}/%{name}-tests.jar
-
-%files xml
-%defattr(644,root,root,755)
-%{_javadir}/%{name}-xml-%{version}.jar
-%{_javadir}/%{name}-xml.jar
-
+%if %{with javadoc}
 %files javadoc
 %defattr(644,root,root,755)
 %{_javadocdir}/%{name}-%{version}
+%ghost %{_javadocdir}/%{srcname}
+%endif
 
 %files doc
 %defattr(644,root,root,755)
