@@ -10,6 +10,7 @@ Version:	1.2
 Release:	0.1
 License:	Exolab Software License, BSD-like
 Group:		Development/Languages/Java
+# http://svn.codehaus.org/castor/castor/
 Source0:	castor-1.2.tar.bz2
 # Source0-md5:	3387cdf40b0ab66c1aac1f0fb16ccb5f
 URL:		http://castor.codehaus.org/
