@@ -7,7 +7,7 @@ Summary:	An open source data binding framework for Java
 Summary(pl.UTF-8):	Szkielet wiązania danych dla Javy
 Name:		castor
 Version:	1.2
-Release:	0.1
+Release:	1
 License:	Exolab Software License, BSD-like
 Group:		Development/Languages/Java
 # http://svn.codehaus.org/castor/castor/
