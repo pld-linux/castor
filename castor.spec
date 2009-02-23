@@ -11,12 +11,16 @@ Release:	0.1
 License:	Exolab Software License, BSD-like
 Group:		Development/Languages/Java
 # http://svn.codehaus.org/castor/castor/
-Source0:	castor-1.2.tar.bz2
+Source0:	%{name}-%{version}.tar.bz2
 # Source0-md5:	3387cdf40b0ab66c1aac1f0fb16ccb5f
+Source1:	%{name}.sh
+Source2:	%{name}-xml2xsd.sh
 URL:		http://castor.codehaus.org/
 BuildRequires:	ant
 BuildRequires:	ant-trax
 BuildRequires:	java-gcj-compat-devel
+BuildRequires:  jpackage-utils
+BuildRequires:  rpmbuild(macros) >= 1.300
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -87,8 +91,8 @@ Dokumentacja dla pakietu %{name}.
 
 export SHELL=/bin/sh
 cd src
-ant -Dbuild.compiler=extJavac jar.all
-ant javadoc
+%ant -Dbuild.compiler=extJavac jar.all
+%ant javadoc
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -116,7 +120,12 @@ ln -s %{srcname}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{srcname} # ghost sym
 
 # do this last, since it will delete all build directories
 export CLASSPATH=%(build-classpath adaptx)
-ant -buildfile src/build.xml doc
+%ant -buildfile src/build.xml doc
+
+# shell wrappers
+install -d $RPM_BUILD_ROOT%{_bindir}
+install %SOURCE1 $RPM_BUILD_ROOT%{_bindir}/castor
+install %SOURCE2 $RPM_BUILD_ROOT%{_bindir}/xml2xsd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -126,8 +135,9 @@ ln -s %{name}-%{version} %{_javadocdir}/%{name}
 
 %files
 %defattr(644,root,root,755)
-%doc src%{_sysconfdir}/{CHANGELOG,LICENSE,README}
+%doc src/etc/CHANGELOG
 %attr(755,root,root) %{_bindir}/%{name}
+%attr(755,root,root) %{_bindir}/xml2xsd
 %{_javadir}/castor
 %{_javadir}/*.jar
 
