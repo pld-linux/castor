@@ -2,7 +2,6 @@
 # Conditional build:
 %bcond_without	javadoc		# don't build javadoc
 #
-%include	/usr/lib/rpm/macros.java
 Summary:	An open source data binding framework for Java
 Summary(pl.UTF-8):	Szkielet wiązania danych dla Javy
 Name:		castor
